@@ -336,7 +336,8 @@ dev = [
 requires-dist = [
     { name = "a2ui-core", editable = "python/a2ui_core" },
     { name = "anywidget", specifier = ">=0.11.0" },
-    { name = "ipykernel", specifier = ">=6.29.0,!=7.1.*,!=7.2.*,!=7.3.*" },
+    { name = "ipykernel", marker = "python_full_version < '3.12'", specifier = ">=6.9.2,!=7.1.*,!=7.2.*,!=7.3.*" },
+    { name = "ipykernel", marker = "python_full_version >= '3.12'", specifier = ">=6.29.0,!=7.1.*,!=7.2.*,!=7.3.*" },
     { name = "jupyter-ui-poll", specifier = ">=1.0.0" },
 ]
 
