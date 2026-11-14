@@ -323,6 +323,7 @@ dependencies = [
     { name = "a2ui-core" },
     { name = "anywidget" },
     { name = "ipykernel" },
+    { name = "jupyter-ui-poll" },
 ]
 
 [package.dev-dependencies]
@@ -335,7 +336,8 @@ dev = [
 requires-dist = [
     { name = "a2ui-core", editable = "python/a2ui_core" },
     { name = "anywidget", specifier = ">=0.11.0" },
-    { name = "ipykernel", specifier = ">=7.4.0" },
+    { name = "ipykernel", specifier = ">=6.29.0,!=7.1.*,!=7.2.*,!=7.3.*" },
+    { name = "jupyter-ui-poll", specifier = ">=1.0.0" },
 ]
 
 [package.metadata.requires-dev]
@@ -2582,6 +2584,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/02/49/9d1284d0dc65e2c757b74c6687b6d319b02f822ad039e5c512df9194d9dd/jupyter_core-5.9.1.tar.gz", hash = "sha256:4d09aaff303b9566c3ce657f580bd089ff5c91f5f89cf7d8846c3cdf465b5508", size = 89814, upload-time = "2025-10-16T19:19:18.444Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e7/e7/80988e32bf6f73919a113473a604f5a8f09094de312b9d52b79c2df7612b/jupyter_core-5.9.1-py3-none-any.whl", hash = "sha256:ebf87fdc6073d142e114c72c9e29a9d7ca03fad818c5d300ce2adc1fb0743407", size = 29032, upload-time = "2025-10-16T19:19:16.783Z" },
+]
+
+[[package]]
+name = "jupyter-ui-poll"
+version = "1.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "ipython" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f1/3f/65f6f0bc32a07f9a4835d9c6e74f20b43a9fc0fe879ef64c56605660307d/jupyter_ui_poll-1.1.0.tar.gz", hash = "sha256:9684c98db5b02054afa732b06143d865315a6f8653b62a315370856c87b60272", size = 13413, upload-time = "2025-10-31T06:39:15.214Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/93/55/be532372738cc4f4e5ce653c381241dade44194bf54d022ad28ec2887d61/jupyter_ui_poll-1.1.0-py3-none-any.whl", hash = "sha256:4400366458851e5636adaea2add991db22a6e5bc8b4470d09f73cbfc2864eacb", size = 8972, upload-time = "2025-10-31T06:39:14.052Z" },
 ]
 
 [[package]]
