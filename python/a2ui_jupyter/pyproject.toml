@@ -23,7 +23,7 @@ keywords = ["a2ui", "jupyter", "jupyterlab", "renderer"]
 dependencies = [
   "a2ui-core>=0.6.0,<0.7.0",
   "anywidget>=0.11.0",
-  "ipykernel>=7.4.0",
+  "jupyter-ui-poll>=1.0.0",
 ]
 
 [project.urls]
@@ -65,7 +65,6 @@ core-metadata-version = "2.4"
 
 [dependency-groups]
 dev = [
-  "jupyter-client>=8.6.0",
   "pytest>=9.1.1",
 ]
 

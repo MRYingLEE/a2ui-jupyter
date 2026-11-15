@@ -15,6 +15,9 @@
 from __future__ import annotations
 
 import asyncio
+import subprocess
+import sys
+from types import SimpleNamespace
 from typing import Any
 
 import anywidget
@@ -22,6 +25,7 @@ import pytest
 from pydantic import ValidationError
 
 from a2ui_jupyter import A2UISurface
+from a2ui_jupyter import surface as surface_module
 
 ACTION = {
     "version": "1.0",
@@ -124,6 +128,49 @@ def test_send_logs_and_sends_valid_messages_in_order(
     assert [content["message"] for content in sent] == messages
 
 
+def test_send_burst_syncs_the_log_once_and_display_flushes_it(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    sent: list[dict[str, Any]] = []
+    monkeypatch.setattr(
+        anywidget.AnyWidget,
+        "send",
+        lambda _widget, content, buffers=None: sent.append(content),
+    )
+    surface = A2UISurface()
+    log_syncs: list[int] = []
+    surface.observe(lambda change: log_syncs.append(len(change["new"])), "message_log")
+
+    async def send_burst() -> None:
+        surface.send({
+            "version": "1.0",
+            "createSurface": {
+                "surfaceId": "surface-1",
+                "catalogId": "https://a2ui.org/specification/v1_0/basic_catalog.json",
+            },
+        })
+        for value in range(3):
+            surface.send({
+                "version": "1.0",
+                "updateDataModel": {
+                    "surfaceId": "surface-1",
+                    "path": "/value",
+                    "value": value,
+                },
+            })
+        assert [content["sequence"] for content in sent] == [0, 1, 2, 3]
+        assert log_syncs == []
+        surface._repr_mimebundle_()
+        assert log_syncs == [4]
+        surface.send({"version": "1.0", "deleteSurface": {"surfaceId": "surface-1"}})
+        await asyncio.sleep(0.3)
+
+    asyncio.run(send_burst())
+
+    assert log_syncs == [4, 5]
+    assert [entry["sequence"] for entry in surface.message_log] == list(range(5))
+
+
 @pytest.mark.parametrize("message", RENDERER_MESSAGES)
 def test_all_v1_renderer_messages_reach_the_message_queue(
     message: dict[str, Any],
@@ -172,3 +219,64 @@ def test_invalid_or_unrelated_frontend_messages_are_rejected() -> None:
             {"type": "a2ui", "message": {"version": "0.9", "action": {}}},
             [],
         )
+
+
+def test_package_imports_without_ipykernel() -> None:
+    # JupyterLite (xeus) kernels have no IPython kernel; the package must still import.
+    script = """
+import sys
+sys.modules["ipykernel"] = None
+from a2ui_jupyter import surface as module
+assert module._kernel_needs_comm_polling() is False
+"""
+    result = subprocess.run(
+        [sys.executable, "-c", script],
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=120,
+    )
+    assert result.returncode == 0, result.stderr
+
+
+def _kernel_of(module_name: str) -> object:
+    return type("Kernel", (), {"__module__": module_name})()
+
+
+@pytest.mark.parametrize(
+    ("kernel_module", "ipykernel_version", "expected"),
+    [
+        ("ipykernel.ipkernel", "6.29.5", True),
+        ("ipykernel.ipkernel", "7.0.1", True),
+        ("ipykernel.ipkernel", "7.4.0", False),
+        # Non-ipykernel kernels never consult the ipykernel version.
+        ("xeus_python.kernel", "7.2.0", False),
+    ],
+)
+def test_comm_polling_depends_on_kernel_and_ipykernel_version(
+    monkeypatch: pytest.MonkeyPatch,
+    kernel_module: str,
+    ipykernel_version: str,
+    expected: bool,
+) -> None:
+    kernel = _kernel_of(kernel_module)
+    monkeypatch.setattr(
+        surface_module, "get_ipython", lambda: SimpleNamespace(kernel=kernel)
+    )
+    monkeypatch.setattr(surface_module, "version", lambda _name: ipykernel_version)
+
+    assert surface_module._kernel_needs_comm_polling() is expected
+
+
+@pytest.mark.parametrize("ipykernel_version", ["7.1.0", "7.3.1"])
+def test_comm_polling_rejects_ipykernel_without_polling_or_native_dispatch(
+    monkeypatch: pytest.MonkeyPatch, ipykernel_version: str
+) -> None:
+    kernel = _kernel_of("ipykernel.ipkernel")
+    monkeypatch.setattr(
+        surface_module, "get_ipython", lambda: SimpleNamespace(kernel=kernel)
+    )
+    monkeypatch.setattr(surface_module, "version", lambda _name: ipykernel_version)
+
+    with pytest.raises(RuntimeError, match="cannot deliver renderer messages"):
+        surface_module._kernel_needs_comm_polling()

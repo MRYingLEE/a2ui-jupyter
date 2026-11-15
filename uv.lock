@@ -322,12 +322,11 @@ source = { editable = "python/a2ui_jupyter" }
 dependencies = [
     { name = "a2ui-core" },
     { name = "anywidget" },
-    { name = "ipykernel" },
+    { name = "jupyter-ui-poll" },
 ]
 
 [package.dev-dependencies]
 dev = [
-    { name = "jupyter-client" },
     { name = "pytest" },
 ]
 
@@ -335,14 +334,11 @@ dev = [
 requires-dist = [
     { name = "a2ui-core", editable = "python/a2ui_core" },
     { name = "anywidget", specifier = ">=0.11.0" },
-    { name = "ipykernel", specifier = ">=7.4.0" },
+    { name = "jupyter-ui-poll", specifier = ">=1.0.0" },
 ]
 
 [package.metadata.requires-dev]
-dev = [
-    { name = "jupyter-client", specifier = ">=8.6.0" },
-    { name = "pytest", specifier = ">=9.1.1" },
-]
+dev = [{ name = "pytest", specifier = ">=9.1.1" }]
 
 [[package]]
 name = "a2ui-mcp-apps-in-a2ui-sample"
@@ -837,15 +833,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/79/31/0491d707c674b34267f55d96d6a7148e55e7b6718a271686232cf295fbe2/anywidget-0.11.0.tar.gz", hash = "sha256:6695fbef9449cf8c27f421b96c5837aa37f909ec1f60cfa33add333e1b70b169", size = 426999, upload-time = "2026-04-27T23:42:09.576Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/8e/c2/8fec8e8e2eb920cc2280f569144080cd58622a2eda83bfa4c0c354a63264/anywidget-0.11.0-py3-none-any.whl", hash = "sha256:c574d9acc6503ad27b37a9acea48f957a8ba7c9c9876cfcb37898931c098ce9d", size = 317341, upload-time = "2026-04-27T23:42:08.356Z" },
-]
-
-[[package]]
-name = "appnope"
-version = "1.0.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/11/f7/a82489c2b6ebe32d3e2831895ae19c77861f0eadf3bb16034484d965dbb2/appnope-1.0.0.tar.gz", hash = "sha256:685db59cb6043c3c2e528adc0b3bce3a5f8d09bcf7492c6ea650d1b7421f3c49", size = 5454, upload-time = "2026-08-20T21:36:13.748Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/46/c7/6b687cb0f83d2a51017d47953f2ee430ffad6fec2a8ebc964e0718a33eb1/appnope-1.0.0-py3-none-any.whl", hash = "sha256:6fe0c04218aab65c54c4ff81638cdbf848d89f5653b74d68638a137f200dd16e", size = 4158, upload-time = "2026-08-20T21:36:12.444Z" },
 ]
 
 [[package]]
@@ -2219,29 +2206,6 @@ wheels = [
 ]
 
 [[package]]
-name = "ipykernel"
-version = "7.4.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "appnope", marker = "sys_platform == 'darwin'" },
-    { name = "comm" },
-    { name = "debugpy" },
-    { name = "ipython" },
-    { name = "jupyter-client" },
-    { name = "jupyter-core" },
-    { name = "matplotlib-inline" },
-    { name = "nest-asyncio2" },
-    { name = "packaging" },
-    { name = "pyzmq" },
-    { name = "tornado" },
-    { name = "traitlets" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/7a/05/e5499c8b762387d83926bf0389e8fff888c9bf6e7af30566a8527bc12f4a/ipykernel-7.4.0.tar.gz", hash = "sha256:4330114d22b9b33575b2c7c68753fc8faabbbcfbc60b0cdff9f14dd4ce63742f", size = 192731, upload-time = "2026-09-29T16:33:11.468Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/a5/f8/8b5c10c7f36ab5a3b5c4703669e5b14e44e98782b58e535dd30670e8799a/ipykernel-7.4.0-py3-none-any.whl", hash = "sha256:a6757f790ddc5a6006b813d82da1a9dbb65b3a00f2b6607df776418c6566ec1c", size = 123184, upload-time = "2026-09-29T16:33:09.612Z" },
-]
-
-[[package]]
 name = "ipython"
 version = "9.18.1"
 source = { registry = "https://pypi.org/simple" }
@@ -2582,6 +2546,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/02/49/9d1284d0dc65e2c757b74c6687b6d319b02f822ad039e5c512df9194d9dd/jupyter_core-5.9.1.tar.gz", hash = "sha256:4d09aaff303b9566c3ce657f580bd089ff5c91f5f89cf7d8846c3cdf465b5508", size = 89814, upload-time = "2025-10-16T19:19:18.444Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e7/e7/80988e32bf6f73919a113473a604f5a8f09094de312b9d52b79c2df7612b/jupyter_core-5.9.1-py3-none-any.whl", hash = "sha256:ebf87fdc6073d142e114c72c9e29a9d7ca03fad818c5d300ce2adc1fb0743407", size = 29032, upload-time = "2025-10-16T19:19:16.783Z" },
+]
+
+[[package]]
+name = "jupyter-ui-poll"
+version = "1.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "ipython" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f1/3f/65f6f0bc32a07f9a4835d9c6e74f20b43a9fc0fe879ef64c56605660307d/jupyter_ui_poll-1.1.0.tar.gz", hash = "sha256:9684c98db5b02054afa732b06143d865315a6f8653b62a315370856c87b60272", size = 13413, upload-time = "2025-10-31T06:39:15.214Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/93/55/be532372738cc4f4e5ce653c381241dade44194bf54d022ad28ec2887d61/jupyter_ui_poll-1.1.0-py3-none-any.whl", hash = "sha256:4400366458851e5636adaea2add991db22a6e5bc8b4470d09f73cbfc2864eacb", size = 8972, upload-time = "2025-10-31T06:39:14.052Z" },
 ]
 
 [[package]]
