@@ -146,7 +146,10 @@ kernel, or the Pyodide setup cell installs it.
 
 The interactive examples use callbacks rather than waiting for clicks in a
 running cell. The same notebook can therefore be selected with an IPython,
-Pyodide, or xeus-python kernel; kernel installation differs.
+Pyodide, or xeus-python kernel; kernel installation differs. Python notebooks
+cannot run in the JavaScript kernel. The
+[JavaScript examples](../../typescript/renderers/jupyter/examples) provide the
+same numbered notebooks and manual smoke test for that kernel.
 
 ## Kernel support
 
@@ -211,6 +214,34 @@ display(surface)
 
 This sequence was verified in a JupyterLite build that bundles the `a2ui-core`
 and `a2ui-jupyter` wheels. The notebook imports and displays a surface there.
+
+### JavaScript kernel
+
+The JupyterLite JavaScript kernel (`@jupyterlite/javascript-kernel` 0.4.0-alpha.5)
+uses the same bundle through a separate adapter, `kernel.js`. The Python wheel
+does not include it. Host `kernel.js`, `widget.js`, and `widget.css` from the
+[`@a2ui/jupyter` build](../../typescript/renderers/jupyter/) beside each other on
+the site, and make the site provide anywidget 0.11 (the adapter requests the
+`~0.11.*` module version). Then import the adapter by its absolute URL in a cell:
+
+```javascript
+const {A2UISurface} = await import('/files/a2ui/kernel.js'); // adjust to your site
+const surface = new A2UISurface();
+display(surface);
+```
+
+The JavaScript API does not wait for user input. A cell cannot pause for a
+click, so handle actions with `surface.onAction(handler)`, or read the oldest
+queued action in a later cell with `surface.takeAction()`, which returns
+`undefined` when nothing is queued. `surface.send(messages)` and
+`surface.onMessage(handler)` match the Python API.
+
+To run the JavaScript examples, copy the
+[notebooks](../../typescript/renderers/jupyter/examples) into the JupyterLite
+site's contents, select the JavaScript kernel, and run their cells in order.
+The first cell imports `/files/a2ui/kernel.js`; change that URL if the site uses
+a different base path. The Python and JavaScript notebooks use the same A2UI
+messages, but use their respective kernel APIs for callbacks.
 
 ## After the user submits
 
