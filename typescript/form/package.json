@@ -1,0 +1,88 @@
+{
+  "name": "@a2ui/form",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "description": "A2UI forms for notebooks: an input protocol, a form builder and a browser mount",
+  "homepage": "https://a2ui.org/",
+  "repository": {
+    "directory": "typescript/form",
+    "type": "git",
+    "url": "git+https://github.com/MRYingLEE/a2ui-jupyter.git"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/form.js"
+    },
+    "./kernel": {
+      "types": "./dist/types/kernel.d.ts",
+      "default": "./dist/kernel.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "wireit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "wireit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit",
+    "clean": "wireit"
+  },
+  "dependencies": {
+    "@a2ui/markdown-it": "^0.2.4",
+    "@a2ui/react": "^0.16.1",
+    "@a2ui/web_core": "patch:@a2ui/web_core@npm%3A0.16.1#~/.yarn/patches/@a2ui-web_core-npm-0.16.1-cdbbc9a802.patch",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.2",
+    "esbuild": "0.28.1",
+    "eslint": "^10.4.1",
+    "jsdom": "^29.1.1",
+    "prettier": "^3.8.4",
+    "typescript": "5.9.3",
+    "vite": "^8.0.16",
+    "vitest": "^4.1.8",
+    "wireit": "^0.15.0-pre.2"
+  },
+  "wireit": {
+    "build": {
+      "command": "node scripts/build.mjs",
+      "files": [
+        "src/**/*",
+        "scripts/**/*",
+        "tsconfig.json",
+        "tsconfig.build.json"
+      ],
+      "output": [
+        "dist/**"
+      ]
+    },
+    "test": {
+      "command": "vitest run",
+      "dependencies": [
+        "build"
+      ],
+      "files": [
+        "src/**/*",
+        "tests/**/*",
+        "vitest.config.ts",
+        "tsconfig.json"
+      ]
+    },
+    "clean": {
+      "command": "rm -rf dist .wireit"
+    }
+  }
+}

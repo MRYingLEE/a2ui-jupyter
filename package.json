@@ -1,0 +1,28 @@
+{
+  "name": "a2ui-jupyter-workspace",
+  "private": true,
+  "packageManager": "yarn@4.13.0",
+  "workspaces": [
+    "typescript/*",
+    "!**/dist"
+  ],
+  "scripts": {
+    "build:all": "yarn workspaces foreach -A -p --topological-dev run build",
+    "test:all": "yarn workspaces foreach -A -p --topological-dev run test",
+    "typecheck:all": "yarn workspaces foreach -A -p --topological-dev run typecheck",
+    "lint:all": "yarn workspaces foreach -A -p --topological-dev run lint",
+    "format:all": "prettier --config .prettierrc --write .",
+    "format:check:all": "prettier --config .prettierrc --check ."
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.11",
+    "gts": "^7.0.0",
+    "prettier": "^3.8.4",
+    "typescript": "6.0.3",
+    "wireit": "^0.15.0-pre.2"
+  },
+  "resolutions": {
+    "typescript": "6.0.3",
+    "@a2ui/web_core@npm:^0.16.1": "patch:@a2ui/web_core@npm%3A0.16.1#~/.yarn/patches/@a2ui-web_core-npm-0.16.1-cdbbc9a802.patch"
+  }
+}

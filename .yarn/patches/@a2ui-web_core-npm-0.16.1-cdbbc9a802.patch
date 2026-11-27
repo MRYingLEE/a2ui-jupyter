@@ -1,0 +1,17 @@
+diff --git a/src/universal/register_universal_element.js b/src/universal/register_universal_element.js
+index ced525737963f0e44e5bbbe323f069e89196c68b..1830c9e9ccd08efa4f7b31ed557456db112355aa 100644
+--- a/src/universal/register_universal_element.js
++++ b/src/universal/register_universal_element.js
+@@ -40,7 +40,11 @@ export function registerUniversalElement(component) {
+         customElements.define(component.tagName, component.element);
+         return;
+     }
+-    if (existing !== component.element) {
++    // Identical source means the same element evaluated again (for example, a widget module loaded
++    // once per model), so the registered definition can serve both.
++    if (existing !== component.element &&
++        !(existing.prototype instanceof component.element) &&
++        existing.toString() !== component.element.toString()) {
+         throw new Error(`Custom element tag name collision for "${component.tagName}": ` +
+             `attempted to register ${component.element.name || 'anonymous constructor'}, ` +
+             `but tag name is already registered with ${existing.name || 'another constructor'}.`);

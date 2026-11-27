@@ -1,0 +1,9 @@
+node_modules
+dist
+.wireit
+.yarn
+.venv
+python/a2ui_jupyter/src/a2ui_jupyter/static/widget.js
+python/a2ui_jupyter/src/a2ui_jupyter/static/widget.css
+uv.lock
+yarn.lock

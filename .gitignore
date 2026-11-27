@@ -1,0 +1,25 @@
+node_modules
+dist
+.wireit
+*.tsbuildinfo
+.env
+.idea/
+.vscode/
+
+# Yarn Modern
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/sdks
+.yarn/cache
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+python/*/dist/
+
+# Notebooks
+.ipynb_checkpoints/
